@@ -1,6 +1,6 @@
 import { GraphQLClient } from 'graphql-request'
 
-const url = 'https://monteforteirpino.stepzen.net/api/melting-platypus/__graphql'
+const url = 'https://monteforteirpino.stepzen.net/api/calico-owl/__graphql'
 const apikey = process.env.EXPO_PUBLIC_GRAPHQL_API_KEY
 
 const client = new GraphQLClient(url, {

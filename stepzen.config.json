@@ -1,0 +1,4 @@
+{
+  "endpoint": "api/melting-platypus",
+  "root": "api/curl"
+}

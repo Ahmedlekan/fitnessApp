@@ -19,8 +19,8 @@ query exercises($muscle: String, $name: String) {
 
 const ExercisesScreen = () => {
   // Queries
-  const {data, isLoading, error} = useQuery({ 
-    queryKey: ['exercises'], 
+  const {data, isLoading, error} = useQuery({
+    queryKey:['exercises'],
     queryFn: async ()=> client.request(exercisesQuery)
   })
 
@@ -31,8 +31,6 @@ const ExercisesScreen = () => {
     if(error){
       return <Text>Failed to fecth exercises</Text>
     }
-
-    console.log(data)
 
   return (
     <View>
