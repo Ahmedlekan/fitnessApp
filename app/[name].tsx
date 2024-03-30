@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query'
 import graphqlClient from "../graphqlClient"
 import SetsList from '@/components/SetsList'
 
+// getting the query from ibm stepzen to the list of each exercise 
 const exerciseQuery = gql`
 query exercises($name: String) {
   exercises(name: $name) {
@@ -20,7 +21,9 @@ query exercises($name: String) {
 `
 
 const DetailsScreen = () => {
+  // using expo router to get the name of each exercise
     const {name} = useLocalSearchParams()
+    // Queries the data from the stepzen using react query
     const {data, isLoading, error} = useQuery({
       queryKey:['exercises', name],
       queryFn: ()=> graphqlClient.request(exerciseQuery, {name})
@@ -72,7 +75,7 @@ const DetailsScreen = () => {
       </View>
 
       <NewSetInput exerciseName={exercise.name} />
-      
+
       <SetsList />
     </View>
   )

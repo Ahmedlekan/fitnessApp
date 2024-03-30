@@ -10,3 +10,5 @@ const client = new GraphQLClient(url, {
 })
 
 export default client
+
+// GraphQLClient used to make a request from stepzehn end point into our application

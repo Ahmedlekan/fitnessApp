@@ -2,14 +2,18 @@ type InsertSetResponse {
   insertedId: String
 }
 
-scalar InputDocument
+input NewSet {
+  exercise: String!
+  reps: Int!
+  weight: Float
+}
 
 type Mutation {
-  myQuery(
-    collection: String
-    dataSource: String
-    database: String
-    document: InputDocument
+  insertSet(
+    collection: String!
+    dataSource: String!
+    database: String!
+    document: NewSet
   ): InsertSetResponse
     @rest(
       method: POST

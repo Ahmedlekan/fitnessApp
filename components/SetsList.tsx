@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import client from '@/graphqlClient'
 import SetListItem from './SetListItem'
 
+// a POST request of our reps and weight, fetched from mongodb, into stpezen down to our frontend
 const setsQuery = gql`
     query exercises {
         sets {
@@ -19,6 +20,7 @@ const setsQuery = gql`
 `
 
 const SetsList = () => {
+    // Queries the data from the stepzen using react query
     const {data, isLoading, error} = useQuery({
         queryKey:['sets'],
         queryFn: async ()=> client.request(setsQuery)

@@ -3,10 +3,11 @@ import React from 'react'
 import ExerciseListItem from '@/components/ExerciseListItem'
 import { useQuery } from '@tanstack/react-query'
 import { gql } from 'graphql-request'
+// client to make a request from GraphClient
 import client from '@/graphqlClient'
 import NewSetInput from '@/components/NewSetInput'
 
-
+// getting the query from ibm stepzen to the list the exercise
 const exercisesQuery = gql`
 query exercises($muscle: String, $name: String) {
   exercises(muscle: $muscle, name: $name) {
@@ -18,7 +19,7 @@ query exercises($muscle: String, $name: String) {
 `;
 
 const ExercisesScreen = () => {
-  // Queries
+  // Queries the data from the stepzen using react query 
   const {data, isLoading, error} = useQuery({
     queryKey:['exercises'],
     queryFn: async ()=> client.request(exercisesQuery)
