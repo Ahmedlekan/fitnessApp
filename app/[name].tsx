@@ -85,7 +85,9 @@ export default DetailsScreen
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     padding: 10,
+    
   },
   panel: {
     backgroundColor: 'white',

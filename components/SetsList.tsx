@@ -33,11 +33,12 @@ const SetsList = () => {
     console.log(data)
 
   return (
-    <FlatList
-      data={data.sets.documents}
-      showsVerticalScrollIndicator={false}
-      renderItem={({ item }) => <SetListItem set={item} />}
-    />
+      <FlatList
+        data={data.sets.documents}
+        showsVerticalScrollIndicator={false}
+        renderItem={({ item }) => <SetListItem set={item} />}
+      />
+
   )
 }
 
