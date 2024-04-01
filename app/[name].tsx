@@ -53,30 +53,38 @@ const DetailsScreen = () => {
     <View style={styles.container}>
       <Stack.Screen options={{ title: exercise.name }} />
 
-      <Text style={styles.exerciseName}>{exercise.name}</Text>
-      <Text style={styles.exerciseSubtitle}>
-        <Text style={styles.subValue}>{exercise.muscle}</Text>
-        <Text style={styles.subValue}>{exercise.equipment}</Text>
-      </Text>
+      <SetsList 
+        exerciseName={exercise.name}
+        ListHeaderComponent={()=>(
+        <View style={{gap: 5}}>
 
-      <View style={styles.panel}>
-        <Text
-          style={styles.instructions}
-          numberOfLines={isInstructionExpanded ? 0 : 3}
-        >
-          {exercise.instructions}
-        </Text>
-        <Text
-          onPress={() => setIsInstructionExpanded(!isInstructionExpanded)}
-          style={styles.seeMore}
-        >
-          {isInstructionExpanded ? 'See less' : 'See more'}
-        </Text>
-      </View>
+          <View style={styles.panel2}>
+            <Text style={styles.exerciseName}>{exercise.name}</Text>
+            <Text style={styles.exerciseSubtitle}>
+              <Text style={styles.subValue}>{exercise.muscle}</Text>
+              <Text style={styles.subValue}>{exercise.equipment}</Text>
+            </Text>
+          </View>
 
-      <NewSetInput exerciseName={exercise.name} />
+          <View style={styles.panel}>
+            <Text
+              style={styles.instructions}
+              numberOfLines={isInstructionExpanded ? 0 : 3}
+            >
+              {exercise.instructions}
+            </Text>
+            <Text
+              onPress={() => setIsInstructionExpanded(!isInstructionExpanded)}
+              style={styles.seeMore}
+            >
+              {isInstructionExpanded ? 'See less' : 'See more'}
+            </Text>
+          </View>
 
-      <SetsList />
+          <NewSetInput exerciseName={exercise.name} />
+
+        </View>
+      )} />
     </View>
   )
 }
@@ -85,7 +93,6 @@ export default DetailsScreen
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: 10,
     
   },
@@ -93,6 +100,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 10,
     borderRadius: 5,
+  },
+  panel2:{
+    padding: 10,
+    borderRadius: 5,
+    alignItems:"center",
   },
   exerciseName: {
     fontSize: 20,

@@ -7,23 +7,25 @@ import SetListItem from './SetListItem'
 
 // a POST request of our reps and weight, fetched from mongodb, into stpezen down to our frontend
 const setsQuery = gql`
-    query exercises {
-        sets {
-        documents {
-            _id
-            exercise
-            reps
-            weight
-        }
-        }
+query MyQuery($exercise: String!) {
+  sets(exercise:$exercise) {
+    documents {
+      _id
+      exercise
+      reps
+      weight
     }
+  }
+}
 `
 
-const SetsList = () => {
+const SetsList = ({ListHeaderComponent, exerciseName}:any) => {
     // Queries the data from the stepzen using react query
     const {data, isLoading, error} = useQuery({
-        queryKey:['sets'],
-        queryFn: async ()=> client.request(setsQuery)
+        queryKey:['sets', exerciseName],
+        queryFn: async ()=> client.request(setsQuery, {exercise: exerciseName})
+
+        
     })
 
     if(isLoading){
@@ -35,6 +37,10 @@ const SetsList = () => {
   return (
       <FlatList
         data={data.sets.documents}
+        showsHorizontalScrollIndicator={false}
+        ListHeaderComponent={()=> (
+          <ListHeaderComponent />
+        )}
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => <SetListItem set={item} />}
       />
