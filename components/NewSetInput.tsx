@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { gql } from 'graphql-request';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import client from '@/graphqlClient';
+import { useAuth } from '@/authContext/authContext';
 
 type NewSetInputProps = {
     exerciseName: string   
@@ -22,9 +23,8 @@ mutation MyMutation($newSet: NewSet!) {
 `
 
 const NewSetInput = ({ exerciseName }: NewSetInputProps) => {
-  
   const queryClient = useQueryClient()
-
+  const {username} = useAuth()
   const {mutate, isError, isPending} = useMutation({
     mutationFn: (newSet) =>client.request(mutationDocument, {newSet}),
     onSuccess: ()=>{
@@ -39,6 +39,7 @@ const NewSetInput = ({ exerciseName }: NewSetInputProps) => {
 
     const addSet = ()=>{
       const newSet = {
+        username,
         exercise: exerciseName,
         reps: Number.parseInt(reps),
       }

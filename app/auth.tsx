@@ -88,5 +88,6 @@ const styles = StyleSheet.create({
     borderColor: 'gainsboro',
     padding: 5,
     borderRadius: 5,
+    color: 'white',
   },
 });
