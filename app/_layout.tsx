@@ -6,6 +6,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { useColorScheme } from '@/components/useColorScheme';
 import {QueryClientProvider, QueryClient} from "@tanstack/react-query"
+import AuthContextProvider from '@/authContext/authContext';
 
 // Create a client
 const queryClient = new QueryClient()
@@ -45,9 +46,11 @@ export default function RootLayout() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <RootLayoutNav />
-    </QueryClientProvider>
+    <AuthContextProvider>
+      <QueryClientProvider client={queryClient}>
+        <RootLayoutNav />
+      </QueryClientProvider>
+    </AuthContextProvider>
   );
 }
 
