@@ -1,18 +1,17 @@
-import { StyleSheet, Text, View, FlatList, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, FlatList, ActivityIndicator, Button, StatusBar } from 'react-native'
 import React from 'react'
 import ExerciseListItem from '@/components/ExerciseListItem'
-import { useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { gql } from 'graphql-request'
 // client to make a request from GraphClient
 import client from '@/graphqlClient'
-import NewSetInput from '@/components/NewSetInput'
 import { useAuth } from '@/authContext/authContext'
 import { Redirect } from 'expo-router'
 
 // getting the query from ibm stepzen to the list the exercise
 const exercisesQuery = gql`
-query exercises($muscle: String, $name: String) {
-  exercises(muscle: $muscle, name: $name) {
+query exercises($muscle: String, $name: String, $offset: Int) {
+  exercises(muscle: $muscle, name: $name, offset: $offset) {
     name
     muscle
     equipment
@@ -20,15 +19,24 @@ query exercises($muscle: String, $name: String) {
 }
 `;
 
-
-
 const ExercisesScreen = () => {
   const {username} = useAuth()
   // Queries the data from the stepzen using react query 
-  const {data, isLoading, error} = useQuery({
+  const {data, isLoading, error, fetchNextPage, isFetchingNextPage} = useInfiniteQuery({
     queryKey:['exercises'],
-    queryFn: async ()=> client.request(exercisesQuery)
+    queryFn: async ({ pageParam })=> client.request(exercisesQuery, {
+      offset: pageParam
+    }),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, pages) => pages.length * 10,
   })
+
+  const loadMore = ()=>{
+    if (isFetchingNextPage){
+      return
+    }
+    fetchNextPage()
+  }
 
     if (isLoading){
       return (<ActivityIndicator />)
@@ -42,22 +50,31 @@ const ExercisesScreen = () => {
       return <Redirect href={'/auth'} />;
     }
 
+    const exercises = data?.pages.flatMap( page => page.exercises )
+
   return (
-    <View>
+    <View style={styles.container}>
 
       <FlatList
-        data={data?.exercises}
+        data={exercises}
         contentContainerStyle={{ gap: 5 }}
         style={{ padding: 10 }}
         keyExtractor={(item, index) => item.name + index}
         renderItem={({ item }) => <ExerciseListItem item = {item} />}
         onEndReachedThreshold={1}
-
+        onEndReached={loadMore}
       />
+
+      <StatusBar style="auto" />
     </View>
   )
 }
 
 export default ExercisesScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+})
